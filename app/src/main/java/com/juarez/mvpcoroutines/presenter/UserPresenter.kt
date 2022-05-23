@@ -32,4 +32,8 @@ class UserPresenter(private val view: InterfaceMVP.View) : InterfaceMVP.Presente
     override fun onGetUserByIdSuccess(user: User) {
         view.onGetUserByIdSuccess(user)
     }
+
+    override fun onError(e: Exception) {
+        view.onError(e)
+    }
 }

@@ -9,6 +9,7 @@ interface InterfaceMVP {
     interface View {
         fun onGetUsersSuccess(users: List<User>)
         fun onGetUserByIdSuccess(user: User)
+        fun onError(e: Exception)
     }
 
     interface Presenter {
@@ -18,6 +19,7 @@ interface InterfaceMVP {
         fun getUserById(userId: Int)
         fun onGetUserByIdSuccess(user: User)
         fun onCleared() = presenterScope.cancel()
+        fun onError(e: Exception)
     }
 
     interface Interactor {

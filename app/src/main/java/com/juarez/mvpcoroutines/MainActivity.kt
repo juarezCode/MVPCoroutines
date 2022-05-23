@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.juarez.mvpcoroutines.models.User
 import com.juarez.mvpcoroutines.presenter.UserPresenter
+import org.json.JSONException
+import java.io.IOException
 
 class MainActivity : AppCompatActivity(), InterfaceMVP.View {
     private val presenter = UserPresenter(this)
@@ -27,6 +29,22 @@ class MainActivity : AppCompatActivity(), InterfaceMVP.View {
 
     override fun onGetUserByIdSuccess(user: User) {
         Log.d("User", "getUserById " + user.name)
+    }
+
+    override fun onError(e: Exception) {
+
+        when (e) {
+            is IOException -> {
+                Log.d("User", "IOException ")
+            }
+            is JSONException -> {
+                Log.d("User", "JSONException ")
+            }
+            else -> {
+                Log.d("User", "exception ${e.localizedMessage} ")
+            }
+
+        }
     }
 
     override fun onDestroy() {

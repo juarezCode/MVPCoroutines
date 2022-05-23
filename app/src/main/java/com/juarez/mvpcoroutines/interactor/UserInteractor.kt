@@ -9,16 +9,26 @@ class UserInteractor(private val presenter: InterfaceMVP.Presenter) : InterfaceM
     private val repository = UserRepository()
 
     override suspend fun getUsers() {
-        val users = withContext(Dispatchers.IO) {
-            repository.getUsers()
+
+        try {
+            val users = withContext(Dispatchers.IO) {
+                repository.getUsers()
+            }
+            presenter.onGetUsersSuccess(users)
+        } catch (e: Exception) {
+            presenter.onError(e)
         }
-        presenter.onGetUsersSuccess(users)
+
     }
 
     override suspend fun getUserById(userId: Int) {
-        val user = withContext(Dispatchers.IO) {
-            repository.getUserByIdService(userId)
+        try {
+            val user = withContext(Dispatchers.IO) {
+                repository.getUserByIdService(userId)
+            }
+            presenter.onGetUserByIdSuccess(user)
+        } catch (e: Exception) {
+            presenter.onError(e)
         }
-        presenter.onGetUserByIdSuccess(user)
     }
 }
