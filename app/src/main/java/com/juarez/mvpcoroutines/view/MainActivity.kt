@@ -1,10 +1,13 @@
-package com.juarez.mvpcoroutines
+package com.juarez.mvpcoroutines.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.juarez.mvpcoroutines.R
 import com.juarez.mvpcoroutines.common.RetryService
 import com.juarez.mvpcoroutines.common.UsersMVP
+import com.juarez.mvpcoroutines.models.Album
 import com.juarez.mvpcoroutines.models.User
 import com.juarez.mvpcoroutines.presenter.UserPresenter
 import org.json.JSONException
@@ -17,23 +20,21 @@ class MainActivity : AppCompatActivity(), UsersMVP.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        Log.d("User", "MainActivity -> getting users..")
         presenter.getUsers()
     }
 
     override fun onGetUsersSuccess(users: List<User>) {
-        users.forEach { user ->
-            Log.d("User", user.name)
-
-        }.also {
-            presenter.getUserById(users[0].id)
-        }
+        Log.d("User", "MainActivity -> onGetUsersSuccess $users")
+        startActivity(Intent(this, SecondActivity::class.java))
     }
 
-    override fun onGetUserByIdSuccess(user: User) {
-        Log.d("User", "getUserById " + user.name)
+    override fun onGetAlbumsByUserIdSuccess(albums: List<Album>) {
+        Log.d("User", "MainActivity -> onGetAlbumsByUserId $albums")
     }
 
     override fun onError(e: Throwable, retryService: RetryService) {
+        Log.d("User", "MainActivity -> onError")
 
         when (e) {
             is IOException -> {
@@ -63,6 +64,7 @@ class MainActivity : AppCompatActivity(), UsersMVP.View {
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.onCleared()
+        Log.d("User", "MainActivity -> onDestroy")
+        presenter.onDestroy()
     }
 }

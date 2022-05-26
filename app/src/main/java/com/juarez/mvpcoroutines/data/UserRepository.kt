@@ -11,6 +11,7 @@ class UserRepository {
 
     suspend fun getAlbumsByUserId(userId: Int): List<Album> {
         val response = WebService.createUserApi().getAlbumsByUserId(userId)
+        
         return response.body()!!
     }
 

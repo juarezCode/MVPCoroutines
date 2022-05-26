@@ -23,12 +23,12 @@ class UserInteractor(private val presenter: UsersMVP.Presenter) : UsersMVP.Inter
 
     }
 
-    override suspend fun getUserById(userId: Int) {
+    override suspend fun getAlbumsByUserId(userId: Int) {
         try {
-            val user = withContext(Dispatchers.IO) {
-                repository.getUserByIdService(userId)
+            val albums = withContext(Dispatchers.IO) {
+                repository.getAlbumsByUserId(userId)
             }
-            presenter.onGetUserByIdSuccess(user)
+            presenter.onGetAlbumsByUserIdSuccess(albums)
         } catch (e: Throwable) {
             presenter.onError(e, RetryService.GET_USER_BY_ID)
         }

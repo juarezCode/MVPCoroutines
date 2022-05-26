@@ -1,6 +1,7 @@
 package com.juarez.mvpcoroutines.common
 
 import android.content.Context
+import com.juarez.mvpcoroutines.models.Album
 import com.juarez.mvpcoroutines.models.User
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -10,7 +11,7 @@ interface UsersMVP {
 
     interface View {
         fun onGetUsersSuccess(users: List<User>)
-        fun onGetUserByIdSuccess(user: User)
+        fun onGetAlbumsByUserIdSuccess(albums: List<Album>)
         fun onError(e: Throwable, retryService: RetryService)
     }
 
@@ -19,14 +20,14 @@ interface UsersMVP {
         val presenterScope: CoroutineScope
         fun getUsers()
         fun onGetUsersSuccess(users: List<User>)
-        fun getUserById(userId: Int)
-        fun onGetUserByIdSuccess(user: User)
-        fun onCleared() = presenterScope.cancel()
+        fun getAlbumsByUserId(userId: Int)
+        fun onGetAlbumsByUserIdSuccess(albums: List<Album>)
+        fun onDestroy() = presenterScope.cancel()
         fun onError(e: Throwable, retryService: RetryService)
     }
 
     interface Interactor {
         suspend fun getUsers(context: Context)
-        suspend fun getUserById(userId: Int)
+        suspend fun getAlbumsByUserId(userId: Int)
     }
 }
