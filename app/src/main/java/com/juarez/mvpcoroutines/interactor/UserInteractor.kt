@@ -1,9 +1,11 @@
 package com.juarez.mvpcoroutines.interactor
 
 import android.content.Context
+import android.util.Log
 import com.juarez.mvpcoroutines.common.RetryService
 import com.juarez.mvpcoroutines.common.UsersMVP
 import com.juarez.mvpcoroutines.data.UserRepository
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -17,7 +19,10 @@ class UserInteractor(private val presenter: UsersMVP.Presenter) : UsersMVP.Inter
                 repository.getUsers()
             }
             presenter.onGetUsersSuccess(users)
+        } catch (e: CancellationException) {
+            Log.d("User", "interactor getUsers CancellationException $e")
         } catch (e: Throwable) {
+            Log.d("User", "interactor getUsers $e")
             presenter.onError(e, RetryService.GET_USERS)
         }
 
@@ -30,6 +35,7 @@ class UserInteractor(private val presenter: UsersMVP.Presenter) : UsersMVP.Inter
             }
             presenter.onGetAlbumsByUserIdSuccess(albums)
         } catch (e: Throwable) {
+            Log.d("User", "interactor getAlbumsByUserId $e")
             presenter.onError(e, RetryService.GET_USER_BY_ID)
         }
     }

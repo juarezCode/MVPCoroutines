@@ -1,6 +1,5 @@
 package com.juarez.mvpcoroutines.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +9,8 @@ import com.juarez.mvpcoroutines.common.UsersMVP
 import com.juarez.mvpcoroutines.models.Album
 import com.juarez.mvpcoroutines.models.User
 import com.juarez.mvpcoroutines.presenter.UserPresenter
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import org.json.JSONException
 import java.io.IOException
 
@@ -22,11 +23,15 @@ class MainActivity : AppCompatActivity(), UsersMVP.View {
 
         Log.d("User", "MainActivity -> getting users..")
         presenter.getUsers()
+        runBlocking {
+            delay(2000)
+            presenter.getAlbumsByUserId(1)
+        }
     }
 
     override fun onGetUsersSuccess(users: List<User>) {
         Log.d("User", "MainActivity -> onGetUsersSuccess $users")
-        startActivity(Intent(this, SecondActivity::class.java))
+//        startActivity(Intent(this, SecondActivity::class.java))
     }
 
     override fun onGetAlbumsByUserIdSuccess(albums: List<Album>) {

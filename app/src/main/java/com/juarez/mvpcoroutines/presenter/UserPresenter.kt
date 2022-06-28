@@ -21,9 +21,10 @@ class UserPresenter(
     }
 
     override val presenterScope =
-        CoroutineScope(Dispatchers.Main + SupervisorJob() + exceptionHandler)
+        CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     override fun getUsers() {
+        Log.d("User", "presenter getUsers")
         presenterScope.launch {
             interactor.getUsers(context)
         }
@@ -36,6 +37,8 @@ class UserPresenter(
     }
 
     override fun getAlbumsByUserId(userId: Int) {
+        Log.d("User", "presenter getAlbumsByUserId")
+        presenterScope.coroutineContext.cancelChildren()
         presenterScope.launch {
             interactor.getAlbumsByUserId(userId)
         }
